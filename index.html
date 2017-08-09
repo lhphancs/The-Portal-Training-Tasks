@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+        .blue_text{
+            color:blue;
+        }
+
+        p.yellow_text{
+            color:yellow;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <p class="my_paragraph blue_text">HELLO WORLD!</p>
+    <button id="my_btn">Button</button>
+</body>
+</html>
+
+<script>
+
+    var main = function(){
+
+        $('#my_btn').click(function()
+        {
+            $('.my_paragraph').toggleClass('yellow_text');
+        });
+    };
+
+    $(document).ready(main);
+</script>
