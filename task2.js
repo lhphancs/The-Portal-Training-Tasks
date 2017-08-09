@@ -60,15 +60,15 @@ var SortedList = function()
         while(n2 !== null){
             if( n1.data.is_time_conflicted(n2) ) //Time conflict exists
             {
-                conflicted_dictionary.push(n1);
-                conflicted_dictionary.push(n2);
+                conflicted_array.push(n1);
+                conflicted_array.push(n2);
                 n2=n2.next;
 
                 while(n2 !== null) //move the n2 pointer forward to compare with n1
                 {
                     n2=n2.next;
                     if( n1.data.is_time_conflicted(n2) )
-                        conflicted_dictionary.push(n2);
+                        conflicted_array.push(n2);
                     else {
                         n2 = n1; //Move n1 pointer to current n2 since they may have conflict with further nodes.
                         break;
@@ -121,4 +121,4 @@ sorted_list.display_all();
 
 var time_conflict_array = sorted_list.get_event_conflicts();
 console.log("Time conflicts:");
-consoole.log(time_conflict_array);
+console.log(time_conflict_array);
