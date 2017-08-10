@@ -81,6 +81,7 @@ var SortedList = function()
                 {
                     conflicted_array.push(n2);
                     n2 = n2.next;
+                    t_event = new Event("", n1.start_time, n1.end_time>=n2.end_time?n1.end_time:n2.end_time);
                 }
 
             }
