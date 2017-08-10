@@ -65,11 +65,19 @@ var SortedList = function()
         {
             if( n1.data.is_time_conflicted(n2.data) ) //Time conflict exists
             {
+
                 conflicted_array.push(n1);
                 conflicted_array.push(n2);
                 n2=n2.next;
 
-                while(n2 !== null &&  n1.data.is_time_conflicted(n2)) //move the n2 pointer forward to compare with n1
+                //If there is a conflict, create t_event that will combine the earlier start time and later end time
+                /* Example of combination of event using graphical timeline...
+                   |-------|        = e1
+                       |-------|    = e2
+                   |-----------|    = t_event
+                */
+                var t_event = new Event("", n1.start_time, n1.end_time>=n2.end_time?n1.end_time:n2.end_time);
+                while(n2 !== null &&  t_event.is_time_conflicted(n2)) //move the n2 pointer forward to compare with n1
                 {
                     conflicted_array.push(n2);
                     n2 = n2.next;
