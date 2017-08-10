@@ -1,3 +1,11 @@
+/*
+NOTE: THIS IS THE VERSION WELL-AFTER THE 1.5 HOUR MARK.
+This follows the same logic as version before 1.5 hour.
+
+For the version before 1.5, see early commits.
+(Some of the latest commits are after the 1.5 hour mark)
+ */
+
 var Event = function(description, start_time, end_time)
 {
     this.description = description;
@@ -6,19 +14,15 @@ var Event = function(description, start_time, end_time)
 
     this.is_time_conflicted = function(other_event)
     {
-        if(this.start_time <= other_event.start_time)
-            if(other_event.start_time <= this.end_time)
-                return true;
-            else
-                return false;
-        else{
-            if(this.start_time <= other_event.end_time)
-                return true;
-            else
-                return false;
-        }
+        var earlier_event = this.start_time <= other_event.start_time?this:other_event;
+        var later_event = this.start_time > other_event.start_time?this:other_event;
+
+        if(earlier_event.end_time >= later_event.start_time)
+            return true;
+        else
+            return false;
     }
-}
+};
 
 var Node = function(data, next)
 {
@@ -57,30 +61,23 @@ var SortedList = function()
         var n1 = this.head;
         var n2 = n1.next;
 
-        while(n2 !== null){
-            if( n1.data.is_time_conflicted(n2) ) //Time conflict exists
+        while(n2 !== null)
+        {
+            if( n1.data.is_time_conflicted(n2.data) ) //Time conflict exists
             {
                 conflicted_array.push(n1);
                 conflicted_array.push(n2);
                 n2=n2.next;
 
-                while(n2 !== null) //move the n2 pointer forward to compare with n1
+                while(n2 !== null &&  n1.data.is_time_conflicted(n2)) //move the n2 pointer forward to compare with n1
                 {
-                    n2=n2.next;
-                    if( n1.data.is_time_conflicted(n2) )
-                        conflicted_array.push(n2);
-                    else {
-                        n2 = n1; //Move n1 pointer to current n2 since they may have conflict with further nodes.
-                        break;
-                    }
+                    conflicted_array.push(n2);
+                    n2 = n2.next;
                 }
-            }
 
-            else //Time don't conflict, so move forward
-            {
-                n1=n2;
-                n2=n1.next;
             }
+            n1=n2; //Move n1 pointer to current n2 since they may have conflict with further nodes.
+            n2=n1.next;
         }
 
         return conflicted_array;
@@ -98,16 +95,15 @@ var SortedList = function()
 
 //Create events
 var event_array = [
-    new Event("Interview at The Portal", new Date(2017, 2, 23, 15, 0), new Date(2017, 2, 23, 16, 30))
-    , new Event("Lunch with Cindy", new Date(2017, 2, 25, 12, 0), new Date(2017, 2, 25, 13, 0))
-    , new Event("Dinner with John", new Date(2017, 2, 24, 17, 0), new Date(2017, 2, 24, 17, 30))
-    , new Event("Conference", new Date(2017, 2, 24, 11, 0), new Date(2017, 2, 24, 17, 30))
+    new Event("Interview at The Portal", new Date(2017, 2, 23, 15, 0), new Date(2017, 2, 23, 16, 30)) // 02/23/17(23:15)-02/23/17(16:30)
+    , new Event("Lunch with Cindy", new Date(2017, 2, 25, 12, 0), new Date(2017, 2, 25, 13, 0)) // 02/25/17(12:00)-02/25/17(13:00)
+    , new Event("Dinner with John", new Date(2017, 2, 24, 17, 0), new Date(2017, 2, 24, 17, 30)) // 02/24/17(17:00)-02/24/17(17:30)
+    , new Event("Conference", new Date(2017, 2, 24, 11, 0), new Date(2017, 2, 24, 17, 30)) // 02/24/17(11:00)-02/24/17(17:30)
 
-
-    , new Event("e1", new Date(2018, 2, 24, 11, 0), new Date(2017, 2, 24, 17, 30))
-    , new Event("e2", new Date(2018, 2, 24, 10, 0), new Date(2017, 2, 24, 11, 0))
-    , new Event("e3", new Date(2019, 2, 24, 11, 0), new Date(2017, 2, 24, 17, 30))
-    , new Event("e4", new Date(2019, 2, 24, 10, 0), new Date(2017, 2, 24, 17, 30))
+    , new Event("e1", new Date(2018, 2, 24, 11, 0), new Date(2018, 2, 24, 17, 30)) // 02/24/18(11:00)-02/24/18(17:30)
+    , new Event("e2", new Date(2018, 2, 24, 10, 0), new Date(2018, 2, 24, 11, 0)) // 02/24/18(10:00)-02/24/18(11:00)
+    , new Event("e3", new Date(2019, 2, 24, 11, 0), new Date(2019, 2, 24, 17, 30)) // 02/24/19(11:00)-02/24/19(17:30)
+    , new Event("e4", new Date(2019, 2, 24, 10, 0), new Date(2019, 2, 24, 17, 30)) // 02/24/19(10:00)-02/24/19(17:30)
 ];
 
 //Create data structure and add to it
@@ -120,5 +116,13 @@ for(var i=0; i<event_array.length; ++i)
 sorted_list.display_all();
 
 var time_conflict_array = sorted_list.get_event_conflicts();
-console.log("Time conflicts:");
+console.log("\n\nTime conflicts:");
 console.log(time_conflict_array);
+
+/*
+NOTE: THIS IS THE VERSION WELL-AFTER THE 1.5 HOUR MARK.
+This follows the same logic as version before 1.5 hour.
+
+For the version before 1.5, see early commits.
+(Some of the latest commits are after the 1.5 hour mark)
+ */
